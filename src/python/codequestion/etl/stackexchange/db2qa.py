@@ -86,7 +86,7 @@ class DB2QA:
         index = 0
 
         for dbfile in databases:
-            print("Processing " + dbfile)
+            print(f"Processing {dbfile}")
 
             # Create source name
             source = os.path.splitext(os.path.basename(dbfile))[0].lower()
@@ -101,9 +101,7 @@ class DB2QA:
 
             # Need to select all rows to allow execution of insert statements
             for question in cur.fetchall():
-                # Find accepted answer
-                answer = self.find(question, cur)
-                if answer:
+                if answer := self.find(question, cur):
                     # Combine into single question row
                     self.insert(qa, index, source, question, answer)
 
@@ -145,7 +143,7 @@ class DB2QA:
             db.execute(create)
         except Exception as e:
             print(create)
-            print("Failed to create table: " + e)
+            print(f"Failed to create table: {e}")
 
     def find(self, question, cur):
         """
@@ -166,11 +164,7 @@ class DB2QA:
         )
         answer = cur.fetchone()
 
-        if answer and answer[0]:
-            # Check if answer has a message body
-            return answer
-
-        return None
+        return answer if answer and answer[0] else None
 
     def insert(self, db, index, source, question, answer):
         """

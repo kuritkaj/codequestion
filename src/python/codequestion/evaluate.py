@@ -119,28 +119,24 @@ class StackExchange:
         results = None
         if scoring:
             # Scoring models have data field with source id + source
-            results = [result["data"] for result in scoring.search(query, 10)]
+            return [result["data"] for result in scoring.search(query, 10)]
         elif embeddings.scoring:
             # Use custom tokenizer for word vector models
             uids = [
                 row["id"] for row in embeddings.search(Tokenizer.tokenize(query), 10)
             ]
 
-            # Get source id + source for each result
-            results = []
-            for uid in uids:
-                results.append(
-                    embeddings.search(
-                        f"select sourceid, source from txtai where id = {uid}"
-                    )[0]
-                )
+            return [
+                embeddings.search(
+                    f"select sourceid, source from txtai where id = {uid}"
+                )[0]
+                for uid in uids
+            ]
         else:
             # Select source id + source with standard similar clause
-            results = embeddings.search(
+            return embeddings.search(
                 f"select sourceid, source from txtai where similar('{query}') limit 10"
             )
-
-        return results
 
 
 class STS:
@@ -221,17 +217,10 @@ class STS:
         with open(path, encoding="utf-8") as f:
             data = csv.reader(f, delimiter="\t", quoting=csv.QUOTE_NONE)
 
-            rows = []
-
-            # Column Index-Name: 4-score, 5-string 1, 6-string 2
-            for x, row in enumerate(data):
-                # Normalize score from 0-5 to 0-1. 1 being most similar.
-                score = float(row[4]) / 5.0
-
-                # Store row as id (1 indexed), normalized score, string 1, string 2
-                rows.append((x + 1, score, row[5], row[6]))
-
-            return rows
+            return [
+                (x + 1, float(row[4]) / 5.0, row[5], row[6])
+                for x, row in enumerate(data)
+            ]
 
 
 if __name__ == "__main__":

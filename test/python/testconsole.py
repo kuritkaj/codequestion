@@ -26,7 +26,7 @@ class TestConsole(unittest.TestCase):
         Initialize test data.
         """
 
-        os.environ["CODEQUESTION_HOME"] = Utils.STACKEXCHANGE + ".console"
+        os.environ["CODEQUESTION_HOME"] = f"{Utils.STACKEXCHANGE}.console"
 
         # Run etl process
         Execute.SOURCES = ["ai"]
@@ -36,7 +36,7 @@ class TestConsole(unittest.TestCase):
 
         # Create embeddings index
         index = Index()
-        index(Utils.PATH + "/index.yml", Utils.QUESTIONS)
+        index(f"{Utils.PATH}/index.yml", Utils.QUESTIONS)
 
         cls.console = Console()
         cls.console.preloop()
