@@ -106,7 +106,7 @@ class XML2DB:
             db.execute(create)
         except Exception as e:
             print(create)
-            print("Failed to create table: " + e)
+            print(f"Failed to create table: {e}")
 
     def xmlstream(self, xml):
         """

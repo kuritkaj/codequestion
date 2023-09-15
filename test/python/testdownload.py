@@ -28,4 +28,4 @@ class TestDownload(unittest.TestCase):
         )
 
         # Check archive uncompressed successfully
-        self.assertTrue(os.path.exists(Utils.PATH + "/codequestion-master/setup.py"))
+        self.assertTrue(os.path.exists(f"{Utils.PATH}/codequestion-master/setup.py"))

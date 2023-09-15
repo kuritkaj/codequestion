@@ -79,13 +79,9 @@ class RowIterator:
         cur.execute("SELECT Question, Source, Tags FROM questions")
 
         for question in tqdm(cur, total=total, desc="Tokenizing input"):
-            # Tokenize question, source and tags
-            tokens = Tokenizer.tokenize(
-                question[0] + " " + question[1] + " " + question[2]
-            )
-
-            # Skip documents with no tokens parsed
-            if tokens:
+            if tokens := Tokenizer.tokenize(
+                f"{question[0]} {question[1]} {question[2]}"
+            ):
                 yield tokens
 
         # Free database resources

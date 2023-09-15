@@ -26,11 +26,11 @@ class TestIndex(unittest.TestCase):
         Test transformers-backed index
         """
 
-        os.environ["CODEQUESTION_HOME"] = Utils.STACKEXCHANGE + ".transformers"
+        os.environ["CODEQUESTION_HOME"] = f"{Utils.STACKEXCHANGE}.transformers"
 
         # Create embeddings index
         index = Index()
-        index(Utils.PATH + "/index.yml", Utils.QUESTIONS)
+        index(f"{Utils.PATH}/index.yml", Utils.QUESTIONS)
 
         # Run tests
         self.runTests()
@@ -40,7 +40,7 @@ class TestIndex(unittest.TestCase):
         Test word vector-backed index
         """
 
-        os.environ["CODEQUESTION_HOME"] = Utils.STACKEXCHANGE + ".wv"
+        os.environ["CODEQUESTION_HOME"] = f"{Utils.STACKEXCHANGE}.wv"
 
         # Build word vectors
         vectors = Vectors()
@@ -48,7 +48,7 @@ class TestIndex(unittest.TestCase):
 
         # Create embeddings index
         index = Index()
-        index(Utils.PATH + "/index.v1.yml", Utils.QUESTIONS)
+        index(f"{Utils.PATH}/index.v1.yml", Utils.QUESTIONS)
 
         # Run tests
         self.runTests()
